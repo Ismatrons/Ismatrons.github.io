@@ -38,6 +38,14 @@ body{
 }
 
 
+#styleCREO{
+    color: rgb(255, 94, 2);
+    font-weight: bold;
+    width: center;
+    background: #3e3e3e;
+    border-radius: 8px;
+}
+
 .cerrarsin{
     width: 50px;
 }
