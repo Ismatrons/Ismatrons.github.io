@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="downloads/face.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IsmatronsPack</title>
+</head>
+<body>
+    <link rel="stylesheet" href="otros.css"/>
+
+<div class="ventana" id="vent">
+        <b id="ismatronspack">IsmatronsPack 1.0</b>
+        <br>
+        <b id="infover">Información de esta versión:</b>
+        <br>
+        <br>
+        <b id="options">- Primera versión del Pack (no completo). Ya están disponibles
+            bloques, armaduras, armas... Items básicos para el PvP. ¡Descárgalo y pruébalo!
+        </b>
+        <br>
+        <br>
+        <br>
+        <a href="downloads/TXT1.zip"><button id="boton">Descargar</button></a>
+        <br>
+        <a href=javascript:cerrar()><img src="imagenes/cerrar.png" style="height: 35px; position:absolute; right: 3px; top: 1px;"></a>
+    </div>
+
+<div>
+    <a href="index.html"><img style="position:inherit;height: 50px; width: 50px; margin: 2px;cursor: pointer;" src="imagenes/atras.png"></a>
+</div>
+
+<div id="cosas">
+    <b style="color:rgb(255, 252, 48);position:inherit; font-size: 23px;">IsmatronsPack (v1.0)</b>
+    <a href="downloads/TXT1.zip"><img src="imagenes/download1234.png" style="position: absolute; right:110px; height: 50px; margin: -9px;"></a>
+    <a href="javascript:abrir()" style="position: absolute; right:30px;"><button class="botonabrir">Info</button></a>
+    <br>
+</div>
+
+
+    <script>
+        function abrir() {
+            document.getElementById("vent").style.display = "block";
+        }
+
+        function cerrar() {
+            document.getElementById("vent").style.display = "none";
+        }
+    </script>
+</body>
+</html>
