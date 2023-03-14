@@ -3,6 +3,10 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+*{
+    user-select: none;
+}
+
 #container{
     /* width: 70%;*/
     position: relative;
