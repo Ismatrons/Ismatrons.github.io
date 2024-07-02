@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:site_name" content="Ismatrons">
+    <meta property="og:title" content="IsmaConvert">
+    <link rel="shortcut icon" href="IsmaConvertLogo.png">
+    <meta property="og:description" content="Convierte tus mejores momentos a otra escala.">
+    <title>IsmaConvert</title>
+    <link rel="stylesheet" href="stylesconvert.css">
+</head>
+<body>
+    <div class="container">
+        <h1>IsmaConvert</h1>
+        <h2>Cambia la resolución</h2> 
+        <form id="upload-form">
+            <label for="image-input">Subir Imagen:</label>
+            <input type="file" id="image-input" accept="image/*" required>
+            
+            <label for="width">Ancho (px):</label>
+            <input type="number" id="width" required>
+            
+            <label for="height">Alto (px):</label>
+            <input type="number" id="height" required>
+            
+            <button type="submit">Redimensionar Imagen</button>
+        </form>
+        
+        <div id="result">
+            <h2>Preview de la imagen redimensionada:</h2>
+            <canvas id="canvas"></canvas>
+            <button id="download-button">Descargar Imagen</button>
+        </div>
+       <h3 style="color:red">Si quieres volver a redimensionar una imagen tan solo recarga la página o "F5"</h3>
+    </div>
+    <div class="version">Versión 1.0.0</div>
+    <script src="scriptsconvert.js"></script>
+</body>
+</html>
