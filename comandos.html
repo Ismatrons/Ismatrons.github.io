@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="shortcut icon" href="exclamacion.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comandos de Ismatrons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-box {
+            margin-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Comandos de Twitch</h1>
+            <input type="text" id="search" class="search-box" onkeyup="searchCommands()" placeholder="Buscar comandos...">
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Comandos</th>
+                    <th>Contenido</th>
+                </tr>
+            </thead>
+            <tbody id="commandsTable">
+                <tr>
+                    <td>!config</td>
+                    <td>Aquí podrás encontrar mi configuración de fortnite.</td>
+                </tr>
+                <tr>
+                    <td>!discord / !ds</td>
+                    <td>¡Entra a la mejor comunidad de discord!</td>
+                </tr>
+                <tr>
+                    <td>!jugar</td>
+                    <td>Si quieres jugar con migo, solo tienes que decirme tu nick por el chat, y te agregaré a la party.</td>
+                </tr>
+                <tr>
+                    <td>!tiktok</td>
+                    <td>Por aquí te dejaré mi tiktok.</td>
+                </tr>
+                <tr>
+                    <td>!youtube</td>
+                    <td>Mi canal de YouTube.</td>
+                </tr>
+                <tr>
+                    <td>!webcam</td>
+                    <td>Mi cámara.</td>
+                </tr>
+                <tr>
+                    <td>!web</td>
+                    <td>ismatrons.com</td>
+                </tr>
+                <tr>
+                    <td>!uv</td>
+                    <td>Mi último video.</td>
+                </tr>
+                <tr>
+                    <td>!tula / !memide</td>
+                    <td>A ver cuanto te mide...</td>
+                </tr>
+                <tr>
+                    <td>!teclado</td>
+                    <td>Mi teclado actual.</td>
+                </tr>
+                <tr>
+                    <td>!subs</td>
+                    <td>Todos los subscriptores que somos actualmente.</td>
+                </tr>
+                <tr>
+                    <td>!skins</td>
+                    <td>Mira cuantas skins me ha regalado en Fortnite en usuario @fnafclassic.</td>
+                </tr>
+                <tr>
+                    <td>!server</td>
+                    <td>Los servers de minecraft donde juego.</td>
+                </tr>
+                <tr>
+                    <td>!sens</td>
+                    <td>Mi sensibilidad del ratón.</td>
+                </tr>
+                <tr>
+                    <td>!roleplay</td>
+                    <td>¡El motivo por el cual no hago roleplay!</td>
+                </tr>
+		<tr>
+                    <td>!res</td>
+                    <td>Mi resolución actual.</td>
+                </tr>
+		<tr>
+                    <td>!reglas</td>
+                    <td>Las reglas que hay que seguir para las privadas de Fortnite.</td>
+                </tr>
+		<tr>
+                    <td>!rank / !rango</td>
+                    <td>Mi rango actual en fortnite.</td>
+                </tr>
+		<tr>
+                    <td>!raid</td>
+                    <td>Descubre como puedes ayudarme haciendome una raid.</td>
+                </tr>
+		<tr>
+                    <td>!precios</td>
+                    <td>Cuando haga un extensible ya sabrás lo precios que habrá.</td>
+                </tr>
+		<tr>
+                    <td>!pc</td>
+                    <td>Las especificaciones de mi PC.</td>
+                </tr>
+		<tr>
+                    <td>!party</td>
+                    <td>Cuando juegue minecraft descubre como puedes unirte a mi party.</td>
+                </tr>
+		<tr>
+                    <td>!pais</td>
+                    <td>🇪🇸 España.</td>
+                </tr>
+		<tr>
+                    <td>!nick</td>
+                    <td>Por supuesto, Ismatrons.</td>
+                </tr>
+		<tr>
+                    <td>!mouse</td>
+                    <td>Mira mi mouse actual.</td>
+                </tr>
+		<tr>
+                    <td>!monitor</td>
+                    <td>Mi monitor.</td>
+                </tr>
+		<tr>
+                    <td>!micro</td>
+                    <td>Mi micro actual.</td>
+                </tr>
+		<tr>
+                    <td>!ip</td>
+                    <td>La IP de los servidores donde juego frecuentemente en Minecraft.</td>
+                </tr>
+		<tr>
+                    <td>!estudios</td>
+                    <td>Estoy actualmente estudiando el segundo año del G.M en Gestión Administrativa.</td>
+                </tr>
+		<tr>
+                    <td>!followage</td>
+                    <td>El tiempo que llevas siguiendome.</td>
+                </tr>
+		<tr>
+                    <td>!edad</td>
+                    <td>¿Quiéres saber mi edad?</td>
+                </tr>
+		<tr>
+                    <td>!earnings</td>
+                    <td>Te sorprenderan mis earnings.</td>
+                </tr>
+		<tr>
+                    <td>!donar</td>
+                    <td>Descubre como puedes donarme.</td>
+                </tr>
+		<tr>
+                    <td>!cascos</td>
+                    <td>Mis humildes cascos.</td>
+                </tr>
+           </tbody>
+        </table>
+    </div>
+<div class="container">
+        <div class="header">
+            <h1>Comandos de Clips</h1>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Comandos</th>
+                </tr>
+            </thead>
+            <tbody id="commandsTable">
+                <tr>
+                    <td>!4k</td>
+                </tr>
+		<tr>
+                    <td>!oye</td>
+                </tr>
+		<tr>
+                    <td>!mancuer1</td>
+                </tr>
+		<tr>
+                    <td>!mancuer</td>
+                </tr>
+		<tr>
+                    <td>!maxgpu</td>
+                </tr>
+		<tr>
+                    <td>!correa</td>
+                </tr>
+		<tr>
+                    <td>!tollega</td>
+                </tr>
+           </tbody>
+        </table>
+    </div>
+    <script>
+        function searchCommands() {
+            const input = document.getElementById('search');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('commandsTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td')[0];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+    </script>
+</body>
+</html>
