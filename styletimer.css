@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: #000;
+    font-family: 'Fredoka', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+}
+
+.countdown {
+    font-size: 12vw;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    gap: 0.2em;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.subtext {
+    font-size: 1.5vw; /* Tamaño de fuente pequeño para el texto "Próximamente..." */
+    margin-top: -10px; /* Ajuste para pegar el texto a los números */
+    color: #fff;
+    text-align: center;
+    color: yellow;
+}
