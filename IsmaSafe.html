@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="shortcut icon" href="C:\Users\Ismatrons\Desktop\HTML\IsmaSlots - copia (2)\IsmaSafe2.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ismatrons.com es tu fuente confiable de descargas seguras, libres de virus y malware. Garantizamos la seguridad en todos nuestros archivos.">
+    <meta name="author" content="Ismatrons Team">
+    <title>IsmaSafe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="colors.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"> <!-- Importar fuente Fredoka One -->
+    <style>
+        /* Deshabilitar selección de texto en toda la página */
+        body {
+            user-select: none;
+        }
+
+        /* Deshabilitar clics en todos los enlaces */
+        a {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        /* Quitar la negrita del título principal */
+        h1 {
+            font-weight: normal;
+        }
+
+        /* Posicionar "Ismatrons Verificado" en la esquina inferior derecha */
+        .verificado {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Fredoka One', cursive;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .verificado img {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+<body class="bg-black text-white flex flex-col items-center justify-center min-h-screen p-6">
+    <header class="text-center mb-12 w-full max-w-3xl">
+        <img src="ismasafe.png" alt="Ismatrons logo, símbolo de seguridad en descargas" class="w-32 md:w-40 mx-auto mb-6">
+        <h1 class="text-4xl md:text-5xl" style="font-family: 'Fredoka One', cursive;">ismatrons.com</h1> <!-- Aplicar la fuente Fredoka One y quitar la negrita -->
+    </header>
+
+    <main class="text-center max-w-2xl w-full">
+        <p class="text-lg md:text-2xl font-light leading-relaxed">
+            En <strong>Ismatrons.com</strong>, ofrecemos <span class="text-yellow-400 font-medium">descargas completamente seguras</span>, libres de <span class="text-yellow-400 font-medium">virus</span> y <span class="text-yellow-400 font-medium">malware</span>. Todos nuestros archivos pasan por un <span class="text-yellow-400 font-medium">riguroso proceso de verificación</span> para garantizar tu <span class="text-yellow-400 font-medium">total tranquilidad</span>.
+        </p>
+    </main>
+
+    <footer class="mt-12 text-gray-400 text-sm md:text-lg text-center w-full max-w-3xl">
+        &copy; 2025 Ismatrons - Tu fuente confiable de descargas seguras.
+    </footer>
+
+    <!-- Ismatrons Verificado en la esquina inferior derecha -->
+    <div class="verificado">
+        <span>Ismatrons</span>
+        <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Ícono de verificación">
+    </div>
+</body>
+</html>
