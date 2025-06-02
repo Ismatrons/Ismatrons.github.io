@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estado - 1V1 PRO (ISMA)</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --verde: #22c55e;
+      --amarillo: #facc15;
+      --rojo: #ef4444;
+      --bg-claro: #f8fafc;
+      --bg-oscuro: #0f172a;
+      --text-claro: #0f172a;
+      --text-oscuro: #f1f5f9;
+      --card-bg-claro: #ffffff;
+      --card-bg-oscuro: #1e293b;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .modo-claro {
+      background-color: var(--bg-claro);
+      color: var(--text-claro);
+    }
+
+    .modo-oscuro {
+      background-color: var(--bg-oscuro);
+      color: var(--text-oscuro);
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 1rem 2rem;
+    }
+
+    .toggle-tema {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .contenedor {
+      max-width: 720px;
+      margin: auto;
+      background: var(--card-bg-claro);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: background 0.3s;
+    }
+
+    .modo-oscuro .contenedor {
+      background: var(--card-bg-oscuro);
+    }
+
+    .imagen-mapa {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+h2 {
+      text-align: center;
+      font-size: 1,5rem;
+      margin: 0,5rem;
+      margin-top: -10px;
+      color: yellow;
+      cursor: pointer;
+    }
+
+    .estado {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .punto {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    .modo1 .punto { background: var(--verde); }
+    .modo2 .punto { background: var(--amarillo); }
+    .modo3 .punto { background: var(--rojo); }
+
+    .modo1 .estado-texto::after { content: " FUNCIONAL"; color: var(--verde); }
+    .modo2 .estado-texto::after { content: " MANTENIMIENTO"; color: var(--amarillo); }
+    .modo3 .estado-texto::after { content: " INACTIVO"; color: var(--rojo); }
+
+    .notas {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      font-style: italic;
+      opacity: 0.85;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+
+    .icono-red {
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    .btn-idioma {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #475569;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    @media (max-width: 600px) {
+      .contenedor {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+.copiar-texto {
+  cursor: pointer;
+  margin-left: 8px;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.copiar-texto:hover {
+  color: #38bdf8; /* celeste */
+}
+  </style>
+</head>
+
+<body class="modo1 modo-oscuro">
+  <header>
+    <button class="toggle-tema" onclick="toggleTema()" title="Cambiar modo claro/oscuro">
+      <i id="icono-tema" class="ph ph-moon"></i>
+    </button>
+  </header>
+
+  <div class="contenedor">
+    <img src="fornite 1v1.jpg" alt="Imagen del Mapa" class="imagen-mapa" />
+    <h1 id="titulo">1V1 PRO (ISMA)</h1>
+    <h2 id="texto">6645-3161-2736<span class="copiar-texto" onclick="copiarAlPortapapeles('1234-5678-9999')" title="Copiar">
+    <i class="ph ph-copy-simple"></i>
+  </span></h2>
+</span>
+
+
+    <div class="estado">
+      <span class="punto"></span>
+      <span class="estado-texto"></span>
+    </div>
+
+    <div class="notas" id="notas">
+      Última actualización: 8 de mayo de 2025<br/></br>
+      IMPORTANTE: pronto habrá una MEGA UPDATE en la que el mapa se actualizará a su 2.0 definitiva. En esta versión esperamos incrementar la jugabilidad y mejorar la eficiencia de juego y las mismas mecánicas con las que poder hacer que tanto el ping como los FPS vaya a su mejor rendimiento. Aparte agregaremos nuevas mecánicas, items, y objetos que mejoraran la experiencia de juego.
+    </div>
+
+    <footer>
+      <p id="social-label">Redes sociales:</p>
+      <a href="https://discord.gg/fGCgvz6PTp" target="_blank"><i class="ph ph-discord-logo icono-red"></i>Discord</a>
+      <a href="https://youtube.com/@ismatrons" target="_blank"><i class="ph ph-youtube-logo icono-red"></i>YouTube</a>
+      <a href="https://twitch.tv/ismatrons" target="_blank"><i class="ph ph-twitch-logo icono-red"></i>Twitch</a>
+    </footer>
+  </div>
+
+  <button class="btn-idioma" onclick="toggleIdioma()">ES(ES)</button>
+
+  <script>
+    let idioma = "ES";
+
+    function toggleTema() {
+      const body = document.body;
+      const icono = document.getElementById('icono-tema');
+      body.classList.toggle('modo-claro');
+      body.classList.toggle('modo-oscuro');
+
+      icono.className = body.classList.contains('modo-claro') ? 'ph ph-sun' : 'ph ph-moon';
+    }
+
+    function toggleIdioma() {
+      const boton = document.querySelector(".btn-idioma");
+      idioma = idioma === "ES" ? "EN" : "ES";
+      boton.textContent = idioma === "ES" ? "ES(ES)" : "EN(US)";
+
+      document.getElementById("titulo").textContent =
+        idioma === "ES" ? "1V1 PRO (ISMA)" : "1V1 PRO (ISMA)";
+      document.getElementById("notas").innerHTML =
+        idioma === "ES"
+          ? "Última actualización: 8 de mayo de 2025<br/></br>IMPORTANTE: pronto habrá una MEGA UPDATE en la que el mapa se actualizará a su 2.0 definitiva. En esta versión esperamos incrementar la jugabilidad y mejorar la eficiencia de juego y las mismas mecánicas con las que poder hacer que tanto el ping como los FPS vaya a su mejor rendimiento. Aparte agregaremos nuevas mecánicas, items, y objetos que mejoraran la experiencia de juego."
+          : "Last updated: May 8, 2025<br/></br>IMPORTANT: soon there will be a MEGA UPDATE in which the map will be updated to its final 2.0. In this version we hope to increase the gameplay and improve the game efficiency and the same mechanics with which we can make both the ping and the FPS go at its best performance. We will also add new mechanics, items, and objects that will improve the game experience.";
+      document.getElementById("social-label").textContent =
+        idioma === "ES" ? "Redes sociales:" : "Social networks:";
+    }
+const texto = document.getElementById("texto");
+
+texto.addEventListener("click", () => {
+      const copia = "6645-3161-2736"; // Texto a copiar
+      navigator.clipboard.writeText(copia).catch(err => {
+        console.error("Error al copiar: ", err);
+      });
+    });
+  </script>
+</body>
+</html>
