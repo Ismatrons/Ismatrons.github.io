@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +7,27 @@
     <meta property="og:description" content="Convierte tus mejores momentos a otra escala.">
     <title>IsmaConvert</title>
     <link rel="stylesheet" href="stylesconvert.css">
-</head>
+    <meta property="og:image" content="IsmaConvertLogo.png">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="500">
+    <meta property="og:image:height" content="500">
+    <meta property="og:type" content="website">
+<style type="text/css"></style><style type="text/css" id="operaUserStyle"></style></head>
 <body>
     <div class="container">
-        <h1>IsmaConvert</h1>
+        <div style="display: inline-block; background: rgb(23, 23, 23); color: white; padding: 3px; border: 1px solid black; border-radius: 15px;">
+            <h1 style="margin: 0;">IsmaConvert</h1>
+        </div>
         <h2>Cambia la resolución</h2> 
         <form id="upload-form">
             <label for="image-input">Subir Imagen:</label>
-            <input type="file" id="image-input" accept="image/*" required>
+            <input type="file" id="image-input" accept="image/*" required="">
             
             <label for="width">Ancho (px):</label>
-            <input type="number" id="width" required>
+            <input type="number" id="width" required="">
             
             <label for="height">Alto (px):</label>
-            <input type="number" id="height" required>
+            <input type="number" id="height" required="">
             
             <button type="submit">Redimensionar Imagen</button>
         </form>
@@ -31,10 +36,18 @@
             <h2>Preview de la imagen redimensionada:</h2>
             <canvas id="canvas"></canvas>
             <button id="download-button">Descargar Imagen</button>
+            <div>
+                <br>
+                <a href="https://safe.ismatrons.com" target="_blank" style="text-decoration: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>Con la protección de <strong>IsmaSafe</strong></span> <img src="https://cdn-icons-png.flaticon.com/512/159/159069.png" alt="IsmaSafe" style="height: 25px">
+                </a>
+            </div>
         </div>
        <h3 style="color:red">Si quieres volver a redimensionar una imagen tan solo recarga la página o "F5"</h3>
     </div>
-    <div class="version">Versión 1.0.0</div>
+    <div class="version"><b>New</b> Versión 1.1</div>
+    <div class="black-mode" title="Nueva Update 1.1 con Modo Oscuro, y mejoras de calidad en las imagenes">Modo Oscuro</div>
     <script src="scriptsconvert.js"></script>
+
+
 </body>
-</html>
