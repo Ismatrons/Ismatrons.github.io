@@ -1,23 +1,36 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #0f0f0f;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    user-select: none;
 }
 
 .container {
-    background-color: #fff;
+    background-color: #212121;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     text-align: center;
+    color:white;
 }
 
-h1, h2 {
+h1{
+    font-size:34px;
+    font-weight:800;
+    letter-spacing:1px;
+    background: linear-gradient(to right, rgb(0, 255, 136), rgb(0, 242, 255));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+h2 {
     margin: 0 0 20px;
+    color:white;
 }
 
 form {
@@ -35,8 +48,8 @@ input {
 
 button {
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
+    background-color: #3ea6ff;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -52,11 +65,18 @@ button:hover {
     margin-top: 20px;
 }
 
-
 .version {
     position: fixed;
     bottom: 10px;
     left: 10px;
     font-size: 12px;
-    color: #666;
+    color: #ffffff;
+}
+
+.black-mode {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 15px;
+    color: #f6f6f6;
 }
