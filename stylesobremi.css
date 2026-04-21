@@ -1,0 +1,188 @@
+:root {
+  --bg: #0d0f12;
+  --card: #171a1f;
+  --border: #2a2f36;
+  --text: #eaeef2;
+  --muted: #9aa3ad;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-user-select: none; 
+  -moz-user-select: none;    
+  -ms-user-select: none;  
+  user-select: none;
+}
+
+body {
+  background: linear-gradient(120deg,#021,#010,#201);
+  color: white;
+  padding: 40px 20px 100px 20px; 
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: 26px;
+}
+
+.hero p {
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* PROFILE */
+.profile {
+  max-width: 500px;
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.avatar {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 15px;
+  border-radius: 20px;
+  background: linear-gradient(145deg,#1f232a,#121417);
+  display: flex;
+  background:url('https://www.ismatrons.com/downloads/yticon.png') center/cover;
+  align-items: center;
+  justify-content: center;
+  font-size: 70px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.badge {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.content {
+  max-width: 900px;
+  margin: auto;
+  display: grid;
+  gap: 20px;
+}
+
+.section h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.section p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+ul {
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+ul li {
+  margin-bottom: 6px;
+}
+
+.contact-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.contact-item:hover {
+  background: #1f242b;
+}
+
+.nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-47%);
+  display: flex;
+  gap: 15px;
+  background: rgba(118, 118, 118, 0.5);
+  padding: 10px 20px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.nav img {
+  width: 34px;
+  height: 34px;
+  padding: 6px;
+  object-fit: contain;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 20%;
+  border: 1.5px solid transparent;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-item.active img {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: white;
+  opacity: 1;
+}
+
+.nav-item:not(.active) img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 45px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-item:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
