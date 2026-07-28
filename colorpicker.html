@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://ismatrons.com/images/ispicktida.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:site_name" content="ismatrons.com">
+    <meta property="og:title" content="IsPickTida">
+    <meta property="og:description" content="PickColor Online 100% Seguro">
+    <meta name="keywords" content="pickcolor screen">
+    <link rel="stylesheet" href="colorpicker.css">
+    <meta property="og:type" content="website">
+    <title>IsPickTida - PickColor Online</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1>IsPickTida</h1>
+        <h2>Selecciona un color</h2>
+        <div class="color-preview" id="colorPreview"></div>
+        
+        <button class="btn-pick" id="pickBtn">Seleccionar Color</button>
+        
+        <!-- Bloque HEX -->
+        <div class="result-box">
+            <span class="color-code" id="hexText">#2EC4B6</span>
+            <button class="btn-copy" data-target="hexText">Copiar HEX</button>
+        </div>
+
+        <!-- Bloque HSL (Nuevo) -->
+        <div class="result-box">
+            <span class="color-code" id="hslText">hsl(174, 62%, 47%)</span>
+            <button class="btn-copy" data-target="hslText">Copiar HSL</button>
+        </div>
+
+        <p class="not-supported" id="errorMsg">Tu navegador no soporta la selección de color en pantalla.</p>
+    </div>
+
+    <!-- Estilo de la página inspirado en Raquel (Necaa) ;)-->
+    <div class="toast" id="toast">¡Copiado al portapapeles!</div>
+
+    <script src="colorpicker.js"></script>
+</body>
+</html>

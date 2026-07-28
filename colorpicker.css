@@ -28,13 +28,13 @@ body {
 
 h1 {
     font-size: 1.8rem;
-    
     font-weight: 700;
     background: linear-gradient(135deg, #ff758f 0%, #2ec4b6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-h2{
+
+h2 {
     margin-bottom: 1.8rem;
 }
 
@@ -65,7 +65,7 @@ h2{
     box-shadow: 0 4px 15px rgba(46, 196, 182, 0.3);
     transition: all 0.2s ease;
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     letter-spacing: 0.5px;
 }
 
@@ -88,21 +88,22 @@ h2{
     padding: 0.8rem 1.2rem;
     border-radius: 12px;
     border: 2px solid #e6f4f3;
+    margin-bottom: 0.8rem; /* Espacio entre los bloques HEX y HSL */
 }
 
-.hex-code {
+.color-code {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #333333;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .btn-copy {
     background-color: #ff8fa3;
     color: white;
     border: none;
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem 0.9rem;
     font-size: 0.85rem;
     font-weight: 600;
     border-radius: 8px;
