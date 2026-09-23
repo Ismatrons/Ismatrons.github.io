@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-ascale=1.0">
+    <title>Perfil de Ismatrons</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for classic Twitter-like icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blogGreen: {
+                            light: '#34D399',
+                            DEFAULT: '#10B981',
+                            dark: '#059669',
+                        },
+                        blogRed: {
+                            light: '#F87171',
+                            DEFAULT: '#EF4444',
+                            dark: '#DC2626',
+                        },
+                        classicBg: '#E6ECF0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #E6ECF0;
+            color: #1c2022;
+        }
+        /* Custom cursor style for disabled registration */
+        .cursor-not-allowed-btn {
+            cursor: not-allowed !important;
+        }
+        /* Classic UI Shadow & Borders */
+        .classic-box {
+            background-color: #FFFFFF;
+            border: 1px solid #E1E8ED;
+            border-radius: 6px;
+        }
+        .header-shadow {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        /* Toast animation */
+        @keyframes slideDown {
+            0% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .toast-animate {
+            animation: slideDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans flex flex-col justify-between">
+
+    <!-- Toast Floating Alert Message -->
+    <div id="toast-notification" class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 hidden max-w-md w-full px-4">
+        <div class="bg-blogRed text-white px-5 py-3.5 rounded-lg shadow-2xl flex items-center justify-between border-2 border-red-700 toast-animate">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-circle-exclamation text-xl text-yellow-300"></i>
+                <span class="font-medium text-sm sm:text-base">Aún no está disponible el registro en este blog, pronto más novedades.</span>
+            </div>
+            <button onclick="closeToast()" class="ml-4 text-white hover:text-red-200 text-lg font-bold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 header-shadow">
+        <div class="max-w-6xl mx-auto px-4 h-12 flex items-center justify-between">
+            <!-- Left Header Options / Logo -->
+            <div class="flex items-center space-x-6">
+                <a href="#" class="flex items-center space-x-2 text-blogGreen font-bold text-xl hover:text-blogGreen-dark transition">
+                    
+                    <span>No sé</span>
+                </a>
+                
+            </div>
+
+            <!-- Search bar -->
+            <div class="hidden sm:block flex-1 max-w-xs mx-4">
+                <div class="relative">
+                    <input type="text" placeholder="(Buscar aún no disponible)" class="w-full bg-gray-100 text-sm border border-gray-300 rounded-full py-1.5 pl-3 pr-8 focus:outline-none focus:border-blogGreen focus:bg-white text-gray-700">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Right Buttons: Login & Register (Disabled with locked cursor & toast alert) -->
+            <div class="flex items-center space-x-3">
+                <button onclick="showDisabledToast()" class="cursor-not-allowed-btn text-sm font-semibold text-blogGreen hover:text-blogGreen-dark px-3 py-1.5 rounded-full hover:bg-emerald-50 transition" title="Registro no disponible">
+                    Iniciar sesión
+                </button>
+                <button onclick="showDisabledToast()" class="cursor-not-allowed-btn text-sm font-semibold text-white bg-blogGreen hover:bg-blogGreen-dark px-4 py-1.5 rounded-full shadow-sm transition" title="Registro no disponible">
+                    Registrarse 
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-12">
+        <!-- Banner Image Section -->
+        <div class="w-full h-48 sm:h-64 md:h-80 bg-cover bg-center relative" style="background-image: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWF4N2o1ZW83eDhpMXhyY3VpZzdlM3JleTdxc3VmcGxmOG1zejU1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ujZtlj1Y7wXyE/giphy.gif');">
+            <!-- Overlay Gradient for contrast -->
+            <div class="absolute inset-0 bg-black/10"></div>
+        </div>
+
+        <!-- Stats Bar & Profile Avatar Overlap Header -->
+        <div class="bg-white border-b border-gray-200 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 relative">
+                <div class="flex flex-col sm:flex-row items-center sm:items-end justify-between pb-2 sm:pb-0">
+                    
+                    <!-- Avatar Overlap (Left side) -->
+                    <div class="relative -mt-16 sm:-mt-24 mb-3 sm:mb-0 z-10 text-center sm:text-left">
+                        <img src="https://media.discordapp.net/attachments/1010109287525261343/1551908772534816818/IMG-20240808-WA0007.jpg?ex=6ab3af2c&is=6ab25dac&hm=67f28eb344e3d17fa9b10768a3c935c8c3ba52659b7210546e51b7731e7a5fb0&=&format=webp&width=256&height=384" 
+                             alt="Foto de Perfil" 
+                             class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl border-4 border-white shadow-md object-cover bg-white">
+                    </div>
+
+                    <!-- Stats Navigation Tabs (Right Side) -->
+                    <div class="flex flex-wrap justify-center sm:justify-start items-center space-x-2 sm:space-x-6 text-center py-2 sm:ml-44">
+                        <a href="#" class="px-3 py-2 border-b-4 border-blogGreen text-blogGreen font-bold flex flex-col items-center">
+                            <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold">PUBLICACIONES</span>
+                            <span class="text-lg font-extrabold" id="post-count">0</span>
+                        </a>
+                        <a href="#" class="px-3 py-2 border-b-4 border-transparent hover:border-blogRed text-gray-600 hover:text-blogRed font-bold flex flex-col items-center transition">
+                            <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold">SIGUIENDO</span>
+                            <span class="text-lg font-extrabold">0</span>
+                        </a>
+                        <a href="#" class="px-3 py-2 border-b-4 border-transparent hover:border-blogGreen text-gray-600 hover:text-blogGreen font-bold flex flex-col items-center transition">
+                            <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold">SEGUIDORES</span>
+                            <span class="text-lg font-extrabold">0</span>
+                        </a>
+                        <a href="#" class="px-3 py-2 border-b-4 border-transparent hover:border-blogRed text-gray-600 hover:text-blogRed font-bold flex flex-col items-center transition">
+                            <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold">ME GUSTA</span>
+                            <span class="text-lg font-extrabold">0</span>
+                        </a>
+                        <a href="#" class="px-3 py-2 border-b-4 border-transparent hover:border-blogGreen text-gray-600 hover:text-blogGreen font-bold flex flex-col items-center transition hidden md:flex">
+                            <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold">LISTAS</span>
+                            <span class="text-lg font-extrabold">0</span>
+                        </a>
+                    </div>
+
+                    <!-- Action Button (Follow/Subscribe) -->
+                    <div class="py-3 hidden lg:block">
+                        <button onclick="showDisabledToast()" class="cursor-not-allowed-btn border-2 border-blogGreen text-blogGreen hover:bg-emerald-50 px-5 py-1.5 rounded-full font-bold text-sm transition flex items-center space-x-1">
+                            <i class="fa-solid fa-user-plus text-xs"></i>
+                            <span>Inscribirse</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="max-w-6xl mx-auto px-4 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+                <!-- LEFT COLUMN: Profile Info Only -->
+                <div class="md:col-span-3 space-y-4">
+                    <!-- User Details Box -->
+                    <div class="px-1">
+                        <h1 class="text-xl font-extrabold text-gray-900 leading-tight flex items-center gap-1">
+                            <span>Ismatrons</span>
+                            <i class="fa-solid fa-circle-check text-blogGreen text-base" title="Creador verificado"></i>
+                        </h1>
+                        <p class="text-sm text-gray-500 font-medium">@isma</p>
+                        
+                        <p class="text-sm text-gray-700 mt-3 leading-relaxed">
+                            Programador & Creador de Contenido
+                        </p>
+
+                        <!-- Profile Metadata -->
+                        <div class="mt-4 space-y-2 text-xs text-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-location-dot text-blogRed w-4 text-center"></i>
+                                <span>Andalucía, España</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-link text-blogGreen w-4 text-center"></i>
+                                <a href="ismatrons.com" class="text-blogGreen hover:underline truncate">ismatrons.com</a>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-calendar-days text-gray-400 w-4 text-center"></i>
+                                <span>Se unió en septiembre de 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CENTER COLUMN: Feed Posts -->
+                <div class="md:col-span-6 space-y-3">
+                    
+                    <!-- Posts Filter Tabs Box -->
+                    <div class="classic-box p-3 flex space-x-6 text-sm font-bold text-gray-600 border-b">
+                        <button class="text-blogGreen border-b-2 border-blogGreen pb-1">Publicaciones</button>
+                        <button class="hover:text-blogGreen transition pb-1">Me gusta</button>
+                    </div>
+
+                    <!-- Feed Container -->
+                    <div id="feed-posts" class="space-y-3">
+
+                        <!-- Post Item 1 (Pinned / Top) -->
+                        <article class="classic-box p-4 hover:bg-gray-50 transition">
+                            <div class="flex space-x-3">
+                                <img src="https://media.discordapp.net/attachments/1010109287525261343/1551908772534816818/IMG-20240808-WA0007.jpg?ex=6ab3af2c&is=6ab25dac&hm=67f28eb344e3d17fa9b10768a3c935c8c3ba52659b7210546e51b7731e7a5fb0&=&format=webp&width=256&height=384" class="w-10 h-10 rounded-full object-cover">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-1.5 text-sm">
+                                        <span class="font-bold text-gray-900">Ismatrons</span>
+                                        <i class="fa-solid fa-circle-check text-blogGreen text-xs"></i>
+                                        <span class="text-gray-500">@isma</span>
+                                    </div>
+                                    <p class="text-sm text-gray-800 mt-1 leading-normal">
+                                        This is a Test
+                                    </p>
+
+                                    <!-- Post Actions (Reply, Repost, Like, Share) -->
+                                    <div class="flex justify-between items-center mt-3 text-gray-500 text-xs max-w-md">
+                                        <button class="flex items-center space-x-1.5 hover:text-blogGreen transition">
+                                            <i class="fa-regular fa-comment text-sm"></i>
+                                            <span>0</span>
+                                        </button>
+                                        <button class="flex items-center space-x-1.5 hover:text-blogGreen transition">
+                                            <i class="fa-solid fa-retweet text-sm"></i>
+                                            <span>0</span>
+                                        </button>
+                                        <button onclick="toggleLike(this)" class="flex items-center space-x-1.5 hover:text-blogRed transition group">
+                                            <i class="fa-regular fa-heart text-sm group-hover:text-blogRed"></i>
+                                            <span class="like-count">0</span>
+                                        </button>
+                                        <button class="flex items-center space-x-1.5 hover:text-blogGreen transition">
+                                            <i class="fa-regular fa-share-from-square text-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Sidebar Widgets (Simplified) -->
+                <div class="md:col-span-3 space-y-4">
+                    
+                    <!-- Call To Action Widget (New to Blog?) -->
+                    <div class="classic-box p-4 bg-gradient-to-br from-emerald-50 to-white border-emerald-200">
+                        <h2 class="font-extrabold text-base text-gray-800">¿Nuevo en el Blog?</h2>
+                        <p class="text-xs text-gray-600 mt-1">
+                            Regístrate ahora para obtener tu propia cronología personalizada y comentar en las publicaciones.
+                        </p>
+                        <button onclick="showDisabledToast()" class="cursor-not-allowed-btn w-full mt-3 bg-blogGreen hover:bg-blogGreen-dark text-white font-bold py-2 rounded-full text-sm shadow-sm transition">
+                            Registrarse
+                        </button>
+                    </div>
+
+                    <!-- Footer Links -->
+                    <div class="px-2 text-xs text-gray-500 space-y-1">
+                        <p>© 2026 Mi Blog Personal • Términos • Privacidad • Cookies</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Timeout reference for auto closing toast
+        let toastTimeout = null;
+
+        /**
+         * Triggers the notification toast warning the user that registration is unavailable.
+         */
+        function showDisabledToast() {
+            const toast = document.getElementById('toast-notification');
+            
+            // Clear existing timeout if already visible
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+
+            toast.classList.remove('hidden');
+
+            // Hide automatically after 4 seconds
+            toastTimeout = setTimeout(() => {
+                closeToast();
+            }, 4000);
+        }
+
+        /**
+         * Closes the toast notification window manually
+         */
+        function closeToast() {
+            const toast = document.getElementById('toast-notification');
+            toast.classList.add('hidden');
+        }
+
+        /**
+         * Toggle like status on posts
+         */
+        function toggleLike(button) {
+            const icon = button.querySelector('i');
+            const countSpan = button.querySelector('.like-count');
+            let currentLikes = parseInt(countSpan.textContent, 10);
+
+            if (icon.classList.contains('fa-regular')) {
+                // Heart filled state
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-blogRed');
+                button.classList.add('text-blogRed');
+                countSpan.textContent = currentLikes + 1;
+            } else {
+                // Heart outline state
+                icon.classList.remove('fa-solid', 'text-blogRed');
+                icon.classList.add('fa-regular');
+                button.classList.remove('text-blogRed');
+                countSpan.textContent = Math.max(0, currentLikes - 1);
+            }
+        }
+    </script>
+</body>
+</html>
