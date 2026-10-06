@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f4ed">
+  <meta name="description" content="LujoxProyect, tu diario y agenda personal en un espacio tranquilo y privado.">
+  <link rel="shortcut icon" href="icon.svg">
+  <title>LujoxProyect — Diario & Agenda</title>
+  <style>
+    :root { --paper:#fbfaf6; --canvas:#f2efe7; --ink:#292d28; --muted:#81847b; --line:#e9e5da; --green:#536a56; --green-dark:#405542; --green-soft:#e9eee6; --orange:#c9784d; --shadow:0 18px 55px rgba(60,55,43,.07); --serif:Georgia, 'Times New Roman', serif; --sans:Arial, Helvetica, sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--ink); background:var(--canvas); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+    button, input, textarea { font:inherit; }
+    button { cursor:pointer; }
+    .shell { width:min(1180px, calc(100% - 48px)); margin:0 auto; padding:28px 0 36px; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark { display:grid; place-items:center; width:42px; height:42px; border-radius:14px; color:white; background:var(--green); box-shadow:0 5px 14px #536a5630; }
+    .brand-mark svg { width:22px; height:22px; }
+    .brand-name { font-size:16px; font-weight:700; letter-spacing:-.4px; }
+    .brand-caption { margin-top:2px; color:var(--muted); font-size:11px; letter-spacing:.2px; }
+    .today-chip { display:flex; align-items:center; gap:8px; padding:9px 13px; color:#61685c; background:#e8e5dc; border-radius:999px; font-size:12px; font-weight:600; }
+    .today-chip svg { width:15px; height:15px; }
+    .workspace { display:grid; grid-template-columns:270px minmax(0,1fr); min-height:690px; overflow:hidden; background:var(--paper); border:1px solid #e8e4da; border-radius:22px; box-shadow:var(--shadow); }
+    .sidebar { display:flex; flex-direction:column; padding:28px 18px 22px; background:#f8f6f0; border-right:1px solid var(--line); }
+    .side-label { padding:0 12px; color:#a09f94; font-size:10px; font-weight:700; letter-spacing:1.35px; text-transform:uppercase; }
+    .nav { display:grid; gap:6px; margin-top:13px; }
+    .nav-btn { display:flex; align-items:center; gap:12px; width:100%; padding:12px; color:#76796f; background:transparent; border:0; border-radius:11px; text-align:left; font-size:13px; font-weight:600; transition:.2s; }
+    .nav-btn:hover { color:var(--ink); background:#eeece4; }
+    .nav-btn.active { color:var(--green-dark); background:var(--green-soft); }
+    .nav-btn svg { width:18px; height:18px; stroke-width:1.8; }
+    .nav-count { margin-left:auto; color:#92958c; font-size:11px; }
+    .side-divider { height:1px; margin:23px 8px; background:var(--line); }
+    .side-date { margin:16px 8px 0; padding:15px; background:#fffefa; border:1px solid var(--line); border-radius:13px; }
+    .side-date-label { color:var(--muted); font-size:11px; }
+    .date-input { width:100%; margin-top:10px; padding:9px 10px; color:#41463f; background:#f9f8f2; border:1px solid #e8e5dc; border-radius:8px; outline:none; font-size:12px; }
+    .date-input:focus { border-color:#a9b6a6; box-shadow:0 0 0 3px #536a5612; }
+    .side-note { margin:auto 9px 0; padding:15px 14px; color:#777b70; background:#eeeee6; border-radius:12px; font-family:var(--serif); font-size:13px; font-style:italic; line-height:1.55; }
+    .side-note span { display:block; margin-top:8px; color:#9a9b8e; font-family:var(--sans); font-size:10px; font-style:normal; }
+    .main { min-width:0; padding:32px 42px 36px; }
+    .view { display:none; animation:fade .25s ease; }
+    .view.active { display:block; }
+    @keyframes fade { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+    .greeting { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:29px; }
+    .eyebrow { color:var(--orange); font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+    h1 { margin:7px 0 0; font-family:var(--serif); font-size:32px; font-weight:500; letter-spacing:-.7px; }
+    .subtitle { margin:8px 0 0; color:var(--muted); font-size:13px; }
+    .streak { display:flex; align-items:center; gap:8px; margin-top:6px; padding:9px 12px; color:#73786d; background:#f1efe8; border-radius:10px; font-size:11px; }
+    .streak b { color:var(--orange); font-size:14px; }
+    .streak svg { width:16px; height:16px; color:var(--orange); }
+    .date-banner { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; padding:15px 17px; background:#f5f3ec; border:1px solid #ece8de; border-radius:13px; }
+    .date-banner-left { display:flex; align-items:center; gap:12px; }
+    .date-icon { display:grid; place-items:center; width:37px; height:37px; color:var(--green); background:#e6ebe2; border-radius:11px; }
+    .date-icon svg { width:18px; height:18px; }
+    .date-title { font-family:var(--serif); font-size:15px; }
+    .date-subtitle { margin-top:3px; color:var(--muted); font-size:11px; }
+    .today-link { padding:7px 10px; color:var(--green); background:transparent; border:1px solid #d6dfd3; border-radius:8px; font-size:11px; font-weight:600; }
+    .today-link:hover { background:white; }
+    .section-heading { display:flex; align-items:center; justify-content:space-between; margin:25px 1px 12px; }
+    .section-heading h2 { margin:0; font-family:var(--serif); font-size:17px; font-weight:600; }
+    .section-meta { color:var(--muted); font-size:11px; }
+    .journal-card { min-height:300px; padding:19px 22px; background:#fffefa; border:1px solid #eae6dc; border-radius:13px; box-shadow:0 3px 10px #554d3905; }
+    .journal-meta { display:flex; align-items:center; justify-content:space-between; padding-bottom:13px; border-bottom:1px solid #f0ede5; }
+    .journal-prompt { color:#aaa99d; font-family:var(--serif); font-size:12px; font-style:italic; }
+    .save-status { display:flex; align-items:center; gap:5px; color:#9a9d92; font-size:10px; }
+    .save-status::before { content:''; width:6px; height:6px; background:#93ad8e; border-radius:50%; }
+    .journal-input { display:block; width:100%; min-height:232px; padding:17px 0 8px; color:#44483f; background:transparent; border:0; outline:0; resize:vertical; font-family:var(--serif); font-size:15px; line-height:1.9; }
+    .journal-input::placeholder { color:#c1bfb4; }
+    .entry-footer { margin-top:4px; color:#aaa99d; font-size:10px; text-align:right; }
+    .bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-top:16px; }
+    .mini-card { display:flex; align-items:center; gap:12px; min-height:73px; padding:14px; background:#f7f5ef; border:1px solid #ede9df; border-radius:12px; }
+    .mini-icon { display:grid; place-items:center; width:35px; height:35px; flex:0 0 auto; color:#8d765f; background:#eee9df; border-radius:10px; }
+    .mini-icon svg { width:17px; height:17px; }
+    .mini-title { color:#777b70; font-size:11px; }
+    .mini-value { margin-top:4px; color:#40463e; font-family:var(--serif); font-size:14px; }
+    .tasks-top { display:flex; justify-content:space-between; align-items:flex-end; margin:4px 0 23px; }
+    .tasks-top h1 { margin-top:7px; }
+    .progress-wrap { min-width:126px; text-align:right; }
+    .progress-label { color:#7f8379; font-size:11px; }
+    .progress-label strong { color:var(--green); }
+    .progress-track { width:126px; height:5px; margin-top:9px; overflow:hidden; background:#e9e8df; border-radius:9px; }
+    .progress-fill { width:0; height:100%; background:#7e9a78; border-radius:9px; transition:width .25s; }
+    .task-entry { display:flex; gap:9px; padding:7px; background:#f5f3ec; border:1px solid #ece8de; border-radius:12px; }
+    .task-entry input { min-width:0; flex:1; padding:8px 9px; color:var(--ink); background:transparent; border:0; outline:none; font-size:12px; }
+    .task-entry input::placeholder { color:#aaa99e; }
+    .add-btn { display:flex; align-items:center; gap:6px; padding:9px 13px; color:white; background:var(--green); border:0; border-radius:8px; font-size:11px; font-weight:600; transition:.2s; }
+    .add-btn:hover { background:var(--green-dark); }
+    .add-btn svg { width:14px; height:14px; }
+    .recurring-bar { display:flex; justify-content:space-between; align-items:center; margin:12px 0 0; padding:11px 13px; background:#f9f7f1; border:1px solid #efebe1; border-radius:10px; }
+    .recurring-copy { display:flex; align-items:center; gap:9px; color:#797c73; font-size:11px; }
+    .recurring-copy svg { width:15px; height:15px; color:#a2886d; }
+    .text-button { padding:4px; color:var(--green); background:transparent; border:0; font-size:11px; font-weight:600; }
+    .text-button:hover { color:var(--green-dark); text-decoration:underline; }
+    .task-list { display:grid; gap:8px; margin-top:17px; }
+    .task-item { display:flex; align-items:center; gap:11px; min-height:54px; padding:10px 12px; background:#fffefa; border:1px solid #eeeadf; border-radius:11px; transition:.2s; }
+    .task-item:hover { border-color:#dcded2; }
+    .check { display:grid; place-items:center; width:19px; height:19px; flex:0 0 auto; padding:0; color:white; background:transparent; border:1.5px solid #c9c9bd; border-radius:6px; transition:.2s; }
+    .check svg { width:12px; height:12px; opacity:0; }
+    .task-item.done .check { background:#7f9878; border-color:#7f9878; }
+    .task-item.done .check svg { opacity:1; }
+    .task-text { min-width:0; flex:1; color:#55594f; font-size:12px; line-height:1.45; overflow-wrap:anywhere; }
+    .task-item.done .task-text { color:#a4a69c; text-decoration:line-through; }
+    .task-tag { padding:4px 7px; color:#9a8167; background:#f3eee5; border-radius:5px; font-size:9px; white-space:nowrap; }
+    .delete-btn { display:grid; place-items:center; width:28px; height:28px; padding:0; color:#b1b1a7; background:transparent; border:0; border-radius:7px; opacity:.65; }
+    .delete-btn:hover { color:#a95140; background:#f8eeea; opacity:1; }
+    .delete-btn svg { width:15px; height:15px; }
+    .empty-state { padding:35px 15px; color:#a0a095; background:#fffefa; border:1px dashed #e7e3d8; border-radius:11px; font-family:var(--serif); font-size:14px; font-style:italic; text-align:center; }
+    .list-footer { display:flex; justify-content:space-between; align-items:center; margin-top:14px; color:#a0a196; font-size:10px; }
+    .clear-btn { padding:5px 0; color:#96988e; background:transparent; border:0; font-size:10px; }
+    .clear-btn:hover { color:#a95140; }
+    .recurring-empty { padding:19px; color:#929489; background:#fffefa; border:1px dashed #e7e3d8; border-radius:11px; font-size:11px; line-height:1.6; text-align:center; }
+    .settings-card { margin-bottom:13px; padding:18px; background:#fffefa; border:1px solid #eeeadf; border-radius:12px; }
+    .settings-row { display:flex; align-items:center; justify-content:space-between; gap:15px; }
+    .settings-title { color:#42473f; font-size:13px; font-weight:600; }
+    .settings-description { max-width:520px; margin-top:5px; color:#85887e; font-size:11px; line-height:1.6; }
+    .switch { position:relative; width:43px; height:25px; flex:0 0 auto; }
+    .switch input { position:absolute; width:1px; height:1px; opacity:0; }
+    .switch-track { position:absolute; inset:0; background:#d7d7cd; border-radius:20px; cursor:pointer; transition:.2s; }
+    .switch-track::after { content:''; position:absolute; top:3px; left:3px; width:19px; height:19px; background:white; border-radius:50%; box-shadow:0 1px 4px #0002; transition:.2s; }
+    .switch input:checked + .switch-track { background:#71896d; }
+    .switch input:checked + .switch-track::after { transform:translateX(18px); }
+    .switch input:focus-visible + .switch-track { outline:3px solid #536a5640; outline-offset:2px; }
+    .time-row { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-top:16px; padding-top:15px; border-top:1px solid #f0ede5; }
+    .time-input { width:112px; padding:9px 10px; color:#41463f; background:#f9f8f2; border:1px solid #e8e5dc; border-radius:8px; outline:none; font-size:12px; }
+    .time-input:focus { border-color:#a9b6a6; box-shadow:0 0 0 3px #536a5612; }
+    .settings-status { margin-top:12px; padding:10px 12px; color:#777b70; background:#f5f3ec; border-radius:8px; font-size:10px; line-height:1.5; }
+    .settings-actions { display:flex; align-items:center; gap:12px; margin-top:14px; }
+    .recurring-list { display:grid; gap:8px; }
+    .recurring-item { display:flex; align-items:center; gap:10px; padding:11px 12px; background:#fffefa; border:1px solid #eeeadf; border-radius:10px; }
+    .repeat-icon { display:grid; place-items:center; width:29px; height:29px; color:#9a8167; background:#f3eee5; border-radius:8px; }
+    .repeat-icon svg { width:15px; height:15px; }
+    .recurring-task-text { flex:1; color:#55594f; font-size:12px; }
+    .recurring-info { margin-top:4px; color:#a0a196; font-size:10px; }
+    .modal-backdrop { position:fixed; inset:0; z-index:10; display:none; place-items:center; padding:20px; background:#272a2470; backdrop-filter:blur(3px); }
+    .modal-backdrop.open { display:grid; }
+    .modal { width:min(430px,100%); padding:23px; background:var(--paper); border:1px solid var(--line); border-radius:17px; box-shadow:0 24px 80px #191b1760; animation:fade .18s ease; }
+    .modal-head { display:flex; align-items:flex-start; justify-content:space-between; }
+    .modal h2 { margin:0; font-family:var(--serif); font-size:21px; font-weight:500; }
+    .modal-copy { margin:6px 0 18px; color:var(--muted); font-size:11px; line-height:1.55; }
+    .modal-close { display:grid; place-items:center; width:28px; height:28px; color:#85877d; background:#f0eee7; border:0; border-radius:8px; }
+    .modal-close svg { width:15px; height:15px; }
+    .modal-input { width:100%; padding:11px 12px; color:var(--ink); background:#fffefa; border:1px solid #e8e4da; border-radius:9px; outline:none; font-size:12px; }
+    .modal-input:focus { border-color:#a9b6a6; box-shadow:0 0 0 3px #536a5612; }
+    .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:17px; }
+    .secondary-btn { padding:9px 12px; color:#74786e; background:transparent; border:1px solid #e3dfd5; border-radius:8px; font-size:11px; }
+    .save-btn { padding:9px 13px; color:white; background:var(--green); border:0; border-radius:8px; font-size:11px; font-weight:600; }
+    .toast { position:fixed; right:24px; bottom:24px; z-index:15; padding:11px 15px; color:white; background:#38483b; border-radius:10px; box-shadow:0 7px 22px #1a201a30; font-size:11px; opacity:0; transform:translateY(8px); pointer-events:none; transition:.25s; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    @media (max-width:800px) { .shell { width:min(100% - 26px, 680px); padding:14px 0 22px; } .workspace { grid-template-columns:1fr; min-height:0; } .sidebar { display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px; padding:14px 16px; border-right:0; border-bottom:1px solid var(--line); } .sidebar > .side-label, .side-divider, .side-date, .side-note { display:none; } .nav { display:flex; gap:5px; margin:0; } .nav-btn { justify-content:center; width:auto; padding:10px 11px; font-size:11px; } .nav-btn svg { width:16px; height:16px; } .nav-count { display:none; } .main { padding:27px 25px 30px; } }
+    @media (max-width:520px) { .shell { width:100%; padding:0; } .topbar { margin:0; padding:14px 17px; background:var(--paper); border-bottom:1px solid var(--line); } .brand-mark { width:37px; height:37px; border-radius:12px; } .today-chip { padding:8px 10px; font-size:10px; } .workspace { border:0; border-radius:0; box-shadow:none; } .sidebar { padding:10px 13px; } .nav-btn { gap:7px; padding:9px 10px; } .main { padding:24px 18px 29px; } h1 { font-size:27px; } .greeting { margin-bottom:22px; } .streak { gap:5px; padding:8px; font-size:10px; } .streak b { font-size:12px; } .date-banner { padding:12px; } .journal-card { padding:15px; } .journal-input { min-height:210px; font-size:14px; } .bottom-grid { gap:8px; } .mini-card { gap:8px; padding:10px; } .mini-icon { width:31px; height:31px; } .mini-title { font-size:10px; } .mini-value { font-size:12px; } .tasks-top { align-items:flex-start; } .progress-wrap { min-width:103px; margin-top:7px; } .progress-track { width:103px; } .task-tag { display:none; } .recurring-bar { gap:8px; } .recurring-copy { font-size:10px; } .toast { right:14px; bottom:14px; left:14px; text-align:center; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/><path d="m15 5 4 4"/><path d="M4 4h6"/><path d="M4 8h5"/></svg></div>
+        <div><div class="brand-name">LujoxProyect</div><div class="brand-caption">diario & agenda personal</div></div>
+      </div>
+      <div class="today-chip" id="topToday"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg><span></span></div>
+    </header>
+    <div class="workspace">
+      <aside class="sidebar">
+        <div class="side-label">Tu espacio</div>
+        <nav class="nav" aria-label="Navegación principal">
+          <button class="nav-btn active" data-view="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h7"/></svg>Diario <span class="nav-count" id="entryCount"></span></button>
+          <button class="nav-btn" data-view="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Agenda <span class="nav-count" id="taskCount"></span></button>
+          <button class="nav-btn" data-view="recurring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 17 6l3 6M4 12l3 6a7 7 0 0 0 11.4-3"/></svg>Recurrentes</button>
+          <button class="nav-btn" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.6-1.4-2.4 1.4-1.1a8 8 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1 0 1.8Z" transform="translate(-1 -1)"/></svg>Ajustes</button>
+        </nav>
+        <div class="side-divider"></div>
+        <div class="side-label">Día seleccionado</div>
+        <div class="side-date"><div class="side-date-label">Explora otro día</div><input class="date-input" id="datePicker" type="date" aria-label="Seleccionar fecha"></div>
+        <div class="side-note">“Date permiso para ir despacio y escuchar lo que necesitas.”<span>— Una nota para ti</span></div>
+      </aside>
+      <main class="main">
+        <section class="view active" id="journalView">
+          <div class="greeting"><div><div class="eyebrow">Un espacio para ti</div><h1>Hola, qué bueno verte.</h1><p class="subtitle">Haz una pausa. Este momento también merece ser recordado.</p></div><div class="streak" title="Días seguidos con una entrada"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17h1a3 3 0 0 0 .5-5.96L11 11"/><path d="M15.5 9.5A2.5 2.5 0 0 0 13 7h-1a3 3 0 0 0-.5 5.96L13 13"/><path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z"/></svg><b id="streakValue">0</b> días</div></div>
+          <div class="date-banner"><div class="date-banner-left"><div class="date-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></div><div><div class="date-title" id="dateTitle"></div><div class="date-subtitle" id="dateSubtitle"></div></div></div><button class="today-link" id="goToday">Ir a hoy</button></div>
+          <div class="section-heading"><h2>Las páginas de hoy</h2><span class="section-meta">Solo para ti</span></div>
+          <div class="journal-card"><div class="journal-meta"><span class="journal-prompt">Escribe lo que quieras, a tu ritmo…</span><span class="save-status" id="saveStatus">Guardado</span></div><textarea class="journal-input" id="journalInput" placeholder="¿Qué tienes en mente? Quizá quieras anotar algo que te hizo sonreír, una idea que no quieres olvidar o simplemente cómo te sientes…" aria-label="Escribe tu entrada del diario"></textarea><div class="entry-footer"><span id="wordCount">0 palabras</span></div></div>
+          <div class="bottom-grid"><div class="mini-card"><div class="mini-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M17 7H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="mini-title">Una pequeña intención</div><div class="mini-value" id="intentionValue">Un día a la vez</div></div></div><div class="mini-card"><div class="mini-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></div><div><div class="mini-title">Pendientes para este día</div><div class="mini-value" id="miniTasks">0 tareas</div></div></div></div>
+        </section>
+        <section class="view" id="tasksView">
+          <div class="tasks-top"><div><div class="eyebrow">Pequeños pasos, grandes días</div><h1>Tu agenda</h1><p class="subtitle" id="tasksSubtitle">Organiza lo importante para hoy.</p></div><div class="progress-wrap"><div class="progress-label"><strong id="progressText">0%</strong> completado</div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div></div>
+          <div class="date-banner"><div class="date-banner-left"><div class="date-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></div><div><div class="date-title" id="taskDateTitle"></div><div class="date-subtitle">Tus tareas para este día</div></div></div><button class="today-link" id="goTodayTasks">Ir a hoy</button></div>
+          <div class="task-entry"><input id="taskInput" type="text" maxlength="160" placeholder="Añade algo que quieras hacer…" aria-label="Nueva tarea"><button class="add-btn" id="addTask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Añadir</button></div>
+          <div class="recurring-bar"><div class="recurring-copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 17 6l3 6M4 12l3 6a7 7 0 0 0 11.4-3"/></svg><span>Haz que una tarea aparezca cada día</span></div><button class="text-button" id="openRecurring">+ Crear recurrente</button></div>
+          <div class="section-heading"><h2>Lista de pendientes</h2><span class="section-meta" id="taskSummary"></span></div><div class="task-list" id="taskList"></div><div class="list-footer"><span id="taskFooter"></span><button class="clear-btn" id="clearDone">Borrar completadas</button></div>
+        </section>
+        <section class="view" id="recurringView">
+          <div class="greeting"><div><div class="eyebrow">Rituales que te hacen bien</div><h1>Tu rutina diaria</h1><p class="subtitle">Las tareas recurrentes aparecen automáticamente cada día.</p></div></div>
+          <div class="date-banner"><div class="date-banner-left"><div class="date-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 17 6l3 6M4 12l3 6a7 7 0 0 0 11.4-3"/></svg></div><div><div class="date-title">Pequeños hábitos, a tu manera</div><div class="date-subtitle">Puedes cambiar o quitar una rutina cuando quieras.</div></div></div></div>
+          <div class="section-heading"><h2>Tareas que se repiten</h2><span class="section-meta" id="recurringCount"></span></div><div class="recurring-list" id="recurringList"></div><div style="margin-top:16px"><button class="add-btn" id="openRecurringBottom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Añadir tarea recurrente</button></div>
+        </section>
+        <section class="view" id="settingsView">
+          <div class="greeting"><div><div class="eyebrow">A tu manera</div><h1>Ajustes</h1><p class="subtitle">Elige si quieres que LujoxProyect te recuerde tus pendientes.</p></div></div>
+          <div class="section-heading"><h2>Notificaciones diarias</h2></div>
+          <div class="settings-card">
+            <div class="settings-row"><div><div class="settings-title">Recordarme mis tareas</div><div class="settings-description">Recibirás un aviso a la hora elegida si quedan tareas pendientes para el día.</div></div><label class="switch"><input id="notificationToggle" type="checkbox" aria-label="Activar recordatorios diarios"><span class="switch-track"></span></label></div>
+            <div class="time-row"><div><div class="settings-title">Hora del recordatorio</div><div class="settings-description">Usa la hora local de este dispositivo.</div></div><input class="time-input" id="notificationTime" type="time" value="20:00" aria-label="Hora del recordatorio diario"></div>
+            <div class="settings-status" id="notificationStatus" role="status" aria-live="polite">Desactivadas. Actívalas para recibir un recordatorio mientras LujoxProyect esté abierto.</div>
+            <div class="settings-actions"><button class="secondary-btn" id="testNotification">Enviar prueba</button><span class="section-meta">Puedes desactivarlas cuando quieras.</span></div>
+          </div>
+          <div class="settings-card"><div class="settings-title">Sobre los avisos en Android</div><div class="settings-description">Los navegadores no ofrecen a esta página una alarma diaria local fiable cuando está cerrada. Este recordatorio funciona mientras la página está abierta; Android puede pausarlo si Chrome queda en segundo plano durante mucho tiempo.</div></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="recurringModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><div class="modal-head"><div><h2 id="modalTitle">Una rutina para cada día</h2><p class="modal-copy">Esta tarea se añadirá a tus pendientes al abrir cada nuevo día.</p></div><button class="modal-close" id="closeModal" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div><input class="modal-input" id="recurringInput" type="text" maxlength="160" placeholder="Por ejemplo: beber un vaso de agua"><div class="modal-actions"><button class="secondary-btn" id="cancelModal">Cancelar</button><button class="save-btn" id="saveRecurring">Guardar rutina</button></div></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    // Toda la información vive en localStorage: no hay servidor ni cuenta de usuario.
+    // La clave incluye versión para poder evolucionar el formato sin pisar datos antiguos.
+    const STORAGE_KEY = 'lujoxproyect-data-v1';
+    const $ = (selector) => document.querySelector(selector);
+    const todayKey = () => toDateKey(new Date());
+    const toDateKey = (date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    const parseDateKey = (key) => { const [y,m,d] = key.split('-').map(Number); return new Date(y,m-1,d); };
+    const makeId = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    function loadData() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        return { entries: parsed.entries && typeof parsed.entries === 'object' ? parsed.entries : {}, tasks: parsed.tasks && typeof parsed.tasks === 'object' ? parsed.tasks : {}, recurring: Array.isArray(parsed.recurring) ? parsed.recurring : [], seededDays: Array.isArray(parsed.seededDays) ? parsed.seededDays : [], notificationSettings: { enabled:false, time:'20:00', lastReminderDate:'', ...(parsed.notificationSettings || {}) } };
+      } catch (error) { console.warn('No se pudo leer el diario local; se iniciará uno nuevo.', error); return { entries:{}, tasks:{}, recurring:[], seededDays:[] }; }
+    }
+    let data = loadData();
+    let selectedDate = todayKey();
+    let activeView = 'journal';
+    let saveTimer;
+    let toastTimer;
+    let reminderTimer;
+    let serviceWorkerRegistration = null;
+    function persist() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); $('#saveStatus').textContent = 'Guardado'; return true; }
+      catch (error) { console.error('No se pudo guardar en este navegador.', error); $('#saveStatus').textContent = 'No se pudo guardar'; showToast('No se pudo guardar. Comprueba el espacio disponible del navegador.'); return false; }
+    }
+    function formatLongDate(key) { return new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(parseDateKey(key)); }
+    function formatShortDate(key) { return new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'long'}).format(parseDateKey(key)); }
+    function capitalize(text) { return text.charAt(0).toUpperCase()+text.slice(1); }
+    function ensureTasksForDay(key) {
+      data.tasks[key] ||= [];
+      // Un día solo recibe cada rutina una vez. La marca evita duplicados al volver a esa fecha.
+      if (!data.seededDays.includes(key)) {
+        const existing = new Set(data.tasks[key].map(task => task.recurringId).filter(Boolean));
+        data.recurring.forEach(template => { if (!existing.has(template.id)) data.tasks[key].push({ id:makeId(), text:template.text, done:false, recurringId:template.id }); });
+        data.seededDays.push(key);
+        persist();
+      }
+    }
+    function setDate(key) {
+      selectedDate = key;
+      $('#datePicker').value = key;
+      ensureTasksForDay(key);
+      render();
+    }
+    function switchView(view) {
+      activeView = view;
+      document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.toggle('active', el.dataset.view === view));
+      $(`#${view}View`).classList.add('active');
+      if (view === 'tasks') renderTasks();
+      if (view === 'settings') renderNotificationSettings();
+    }
+    function renderDate() {
+      const longDate = capitalize(formatLongDate(selectedDate));
+      $('#dateTitle').textContent = longDate;
+      $('#taskDateTitle').textContent = longDate;
+      const isToday = selectedDate === todayKey();
+      $('#dateSubtitle').textContent = isToday ? 'Un nuevo día, una nueva página.' : 'Revisando un día anterior.';
+      $('#tasksSubtitle').textContent = isToday ? 'Organiza lo importante para hoy.' : `Organiza lo importante para el ${formatShortDate(selectedDate)}.`;
+      $('#topToday span').textContent = capitalize(new Intl.DateTimeFormat('es-ES',{weekday:'short',day:'numeric',month:'short'}).format(new Date()).replace('.',''));
+      $('#goToday').style.visibility = isToday ? 'hidden' : 'visible';
+      $('#goTodayTasks').style.visibility = isToday ? 'hidden' : 'visible';
+    }
+    function renderJournal() {
+      $('#journalInput').value = data.entries[selectedDate] || '';
+      updateWordCount();
+      const entryDates = Object.keys(data.entries).filter(key => data.entries[key].trim()).length;
+      $('#entryCount').textContent = entryDates || '';
+      const tasks = data.tasks[selectedDate] || [];
+      const remaining = tasks.filter(task => !task.done).length;
+      $('#miniTasks').textContent = `${remaining} ${remaining === 1 ? 'tarea pendiente' : 'tareas pendientes'}`;
+      $('#intentionValue').textContent = tasks.length ? (remaining ? 'Paso a paso' : 'Lo lograste hoy') : 'Un día a la vez';
+      $('#streakValue').textContent = calculateStreak();
+    }
+    function calculateStreak() {
+      let count = 0; const cursor = new Date();
+      if (!(data.entries[todayKey()] || '').trim()) cursor.setDate(cursor.getDate()-1);
+      while ((data.entries[toDateKey(cursor)] || '').trim()) { count++; cursor.setDate(cursor.getDate()-1); }
+      return count;
+    }
+    function updateWordCount() {
+      const words = $('#journalInput').value.trim().split(/\s+/).filter(Boolean).length;
+      $('#wordCount').textContent = `${words} ${words === 1 ? 'palabra' : 'palabras'}`;
+    }
+    function renderTasks() {
+      ensureTasksForDay(selectedDate);
+      const tasks = data.tasks[selectedDate] || [];
+      const done = tasks.filter(task => task.done).length;
+      const pct = tasks.length ? Math.round(done/tasks.length*100) : 0;
+      $('#progressText').textContent = `${pct}%`;
+      $('#progressFill').style.width = `${pct}%`;
+      $('#taskSummary').textContent = `${done} de ${tasks.length} completadas`;
+      $('#taskFooter').textContent = tasks.length ? `${tasks.length} ${tasks.length === 1 ? 'tarea en total' : 'tareas en total'}` : 'Tu lista está despejada';
+      $('#clearDone').style.visibility = done ? 'visible' : 'hidden';
+      $('#taskCount').textContent = tasks.filter(task => !task.done).length || '';
+      const list = $('#taskList');
+      if (!tasks.length) { list.innerHTML = '<div class="empty-state">No hay nada pendiente. Puedes disfrutar este espacio en blanco.</div>'; return; }
+      list.innerHTML = tasks.map(task => `<div class="task-item ${task.done?'done':''}" data-id="${escapeHtml(task.id)}"><button class="check" aria-label="${task.done?'Marcar como pendiente':'Marcar como completada'}" aria-pressed="${task.done}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></button><span class="task-text">${escapeHtml(task.text)}</span>${task.recurringId ? '<span class="task-tag">diaria</span>' : ''}<button class="delete-btn" aria-label="Eliminar tarea"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg></button></div>`).join('');
+    }
+    function renderRecurring() {
+      const list = $('#recurringList');
+      $('#recurringCount').textContent = `${data.recurring.length} ${data.recurring.length === 1 ? 'rutina' : 'rutinas'}`;
+      if (!data.recurring.length) { list.innerHTML = '<div class="recurring-empty">Todavía no tienes rutinas diarias. Añade una, como estirar por la mañana o leer unas páginas.</div>'; return; }
+      list.innerHTML = data.recurring.map(item => `<div class="recurring-item" data-id="${escapeHtml(item.id)}"><div class="repeat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 17 6l3 6M4 12l3 6a7 7 0 0 0 11.4-3"/></svg></div><div class="recurring-task-text">${escapeHtml(item.text)}<div class="recurring-info">Se repite todos los días</div></div><button class="delete-btn" aria-label="Eliminar rutina"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg></button></div>`).join('');
+    }
+    function render() { renderDate(); renderJournal(); renderTasks(); renderRecurring(); }
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])); }
+    function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2400); }
+    function renderNotificationSettings(message) {
+      const settings = data.notificationSettings;
+      $('#notificationToggle').checked = Boolean(settings.enabled);
+      $('#notificationTime').value = settings.time || '20:00';
+      if (message) { $('#notificationStatus').textContent = message; return; }
+      if (!('Notification' in window)) $('#notificationStatus').textContent = 'Este navegador no admite notificaciones web.';
+      else if (Notification.permission === 'denied') $('#notificationStatus').textContent = 'El permiso está bloqueado en Chrome. Puedes cambiarlo en los ajustes del sitio.';
+      else if (settings.enabled && Notification.permission === 'granted') $('#notificationStatus').textContent = `Activadas para las ${settings.time}. El aviso requiere que LujoxProyect siga abierto.`;
+      else $('#notificationStatus').textContent = 'Desactivadas. Actívalas para recibir un recordatorio mientras LujoxProyect esté abierto.';
+    }
+    async function requestNotificationPermission() {
+      if (!('Notification' in window)) throw new Error('Este navegador no admite notificaciones web.');
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') throw new Error('Chrome tiene bloqueado el permiso. Actívalo en los ajustes del sitio.');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') throw new Error('No se concedió permiso para mostrar notificaciones.');
+      return true;
+    }
+    async function getNotificationRegistration() {
+      if (!('serviceWorker' in navigator)) throw new Error('Este navegador no admite el servicio necesario para mostrar avisos.');
+      if (!window.isSecureContext) throw new Error('Las notificaciones requieren una web HTTPS publicada (o localhost).');
+      serviceWorkerRegistration ||= await navigator.serviceWorker.register('./service-worker.js');
+      await navigator.serviceWorker.ready;
+      return serviceWorkerRegistration;
+    }
+    async function displayReminder(title, body) {
+      const registration = await getNotificationRegistration();
+      await registration.showNotification(title, { body, tag:'lujox-daily-reminder', renotify:true, icon:'./icon.svg', badge:'./icon.svg' });
+    }
+    async function enableNotifications() {
+      try {
+        await requestNotificationPermission();
+        await getNotificationRegistration();
+        data.notificationSettings.enabled = true;
+        persist(); renderNotificationSettings(); scheduleDailyReminder();
+        showToast('Recordatorios diarios activados.');
+      } catch (error) {
+        data.notificationSettings.enabled = false; persist(); renderNotificationSettings(error.message); scheduleDailyReminder();
+        showToast(error.message);
+      }
+    }
+    function scheduleDailyReminder() {
+      clearTimeout(reminderTimer); reminderTimer = null;
+      const settings = data.notificationSettings;
+      if (!settings.enabled || !('Notification' in window) || Notification.permission !== 'granted' || !serviceWorkerRegistration) return;
+      const now = new Date();
+      const [hour, minute] = (settings.time || '20:00').split(':').map(Number);
+      const due = new Date(now); due.setHours(hour, minute, 0, 0);
+      if (due <= now) {
+        // Si Chrome suspendió la pestaña poco después de la hora, mostrar el aviso al volver.
+        const missedBy = now.getTime() - due.getTime();
+        if (missedBy < 4*60*60*1000 && settings.lastReminderDate !== todayKey()) { reminderTimer = setTimeout(sendDailyReminder, 300); return; }
+        due.setDate(due.getDate()+1);
+      }
+      reminderTimer = setTimeout(sendDailyReminder, Math.min(due.getTime()-now.getTime(), 2147480000));
+    }
+    async function sendDailyReminder() {
+      const settings = data.notificationSettings;
+      if (!settings.enabled) return;
+      const key = todayKey(); ensureTasksForDay(key);
+      const pending = (data.tasks[key] || []).filter(task => !task.done);
+      if (pending.length && settings.lastReminderDate !== key) {
+        try { await displayReminder('LujoxProyect · Un recordatorio para ti', `Te ${pending.length === 1 ? 'queda' : 'quedan'} ${pending.length} ${pending.length === 1 ? 'tarea pendiente' : 'tareas pendientes'} para hoy.`); settings.lastReminderDate = key; persist(); }
+        catch (error) { renderNotificationSettings(error.message); }
+      }
+      scheduleDailyReminder();
+    }
+    function addTask() {
+      const text = $('#taskInput').value.trim(); if (!text) { $('#taskInput').focus(); return; }
+      ensureTasksForDay(selectedDate); data.tasks[selectedDate].push({id:makeId(),text,done:false}); persist(); $('#taskInput').value = ''; renderTasks(); renderJournal(); $('#taskInput').focus();
+    }
+    function openModal() { $('#recurringModal').classList.add('open'); $('#recurringInput').value = ''; setTimeout(() => $('#recurringInput').focus(), 40); }
+    function closeModal() { $('#recurringModal').classList.remove('open'); }
+    function saveRecurring() {
+      const text = $('#recurringInput').value.trim(); if (!text) { $('#recurringInput').focus(); return; }
+      const item = {id:makeId(),text}; data.recurring.push(item);
+      // También se añade al día que ya está abierto; al resto de días se añade al visitarlos.
+      data.tasks[selectedDate] ||= [];
+      data.tasks[selectedDate].push({id:makeId(),text,done:false,recurringId:item.id});
+      data.seededDays = data.seededDays.filter(key => key !== selectedDate);
+      persist(); closeModal(); render(); showToast('Rutina guardada para este día y los siguientes.');
+    }
+    document.querySelectorAll('.nav-btn').forEach(button => button.addEventListener('click', () => switchView(button.dataset.view)));
+    $('#datePicker').value = selectedDate;
+    $('#datePicker').addEventListener('change', event => { if (event.target.value) setDate(event.target.value); });
+    $('#goToday').addEventListener('click', () => setDate(todayKey()));
+    $('#goTodayTasks').addEventListener('click', () => setDate(todayKey()));
+    $('#journalInput').addEventListener('input', () => {
+      $('#saveStatus').textContent = 'Guardando…'; updateWordCount(); clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => { const text = $('#journalInput').value; if (text.trim()) data.entries[selectedDate] = text; else delete data.entries[selectedDate]; persist(); renderJournal(); }, 350);
+    });
+    $('#addTask').addEventListener('click', addTask);
+    $('#taskInput').addEventListener('keydown', event => { if (event.key === 'Enter') addTask(); });
+    $('#taskList').addEventListener('click', event => {
+      const row = event.target.closest('.task-item'); if (!row) return;
+      const tasks = data.tasks[selectedDate] || []; const task = tasks.find(item => item.id === row.dataset.id); if (!task) return;
+      if (event.target.closest('.check')) task.done = !task.done;
+      else if (event.target.closest('.delete-btn')) data.tasks[selectedDate] = tasks.filter(item => item.id !== task.id);
+      else return;
+      persist(); renderTasks(); renderJournal();
+    });
+    $('#clearDone').addEventListener('click', () => { data.tasks[selectedDate] = (data.tasks[selectedDate] || []).filter(task => !task.done); persist(); renderTasks(); renderJournal(); });
+    $('#openRecurring').addEventListener('click', openModal);
+    $('#openRecurringBottom').addEventListener('click', openModal);
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#cancelModal').addEventListener('click', closeModal);
+    $('#recurringModal').addEventListener('click', event => { if (event.target === $('#recurringModal')) closeModal(); });
+    $('#recurringInput').addEventListener('keydown', event => { if (event.key === 'Enter') saveRecurring(); if (event.key === 'Escape') closeModal(); });
+    $('#saveRecurring').addEventListener('click', saveRecurring);
+    $('#notificationToggle').addEventListener('change', event => { if (event.target.checked) enableNotifications(); else { data.notificationSettings.enabled = false; persist(); scheduleDailyReminder(); renderNotificationSettings(); showToast('Recordatorios desactivados.'); } });
+    $('#notificationTime').addEventListener('change', event => { data.notificationSettings.time = event.target.value || '20:00'; persist(); renderNotificationSettings(); scheduleDailyReminder(); });
+    $('#testNotification').addEventListener('click', async () => {
+      try { await requestNotificationPermission(); await getNotificationRegistration(); await displayReminder('LujoxProyect', '¡Las notificaciones están funcionando en este dispositivo!'); renderNotificationSettings(data.notificationSettings.enabled ? `Activadas para las ${data.notificationSettings.time}. El aviso requiere que LujoxProyect siga abierto.` : 'Prueba enviada. Los recordatorios diarios están desactivados.'); }
+      catch (error) { renderNotificationSettings(error.message); showToast(error.message); }
+    });
+    $('#recurringList').addEventListener('click', event => {
+      const row = event.target.closest('.recurring-item'); if (!row || !event.target.closest('.delete-btn')) return;
+      const id = row.dataset.id; data.recurring = data.recurring.filter(item => item.id !== id);
+      // Quitar la plantilla también elimina sus pendientes futuros ya materializados.
+      Object.keys(data.tasks).forEach(key => { data.tasks[key] = data.tasks[key].filter(task => task.recurringId !== id); });
+      persist(); render(); showToast('Rutina eliminada.');
+    });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeModal(); });
+    ensureTasksForDay(selectedDate);
+    render();
+    // El navegador conserva el permiso, pero el temporizador solo vive mientras la página está abierta.
+    if (data.notificationSettings.enabled && 'serviceWorker' in navigator && window.isSecureContext) {
+      getNotificationRegistration().then(scheduleDailyReminder).catch(error => renderNotificationSettings(error.message));
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleDailyReminder(); });
+    window.addEventListener('focus', scheduleDailyReminder);
+  </script>
+</body>
+</html>
