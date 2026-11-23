@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BatteryLifeBT - Ismatrons</title>
+<link rel="shortcut icon" href="/images/icon.png">
+<meta name="description" content="BatteryLifeBT muestra en la bandeja de Windows 11 la batería de tu ratón, teclado, auriculares y mando, con un icono para cada uno. Gratis y de código abierto.">
+<style>
+:root{
+  --bg:#fafafa;--fg:#16181d;--muted:#5b6270;--card:#fff;--line:#e3e5ea;
+  --accent:#2563eb;--accent-fg:#fff;--ok:#30a46c;--warn:#f5a524;--bad:#e5484d;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1115;--fg:#eceef2;--muted:#9aa2b1;--card:#171a21;--line:#262b35;--accent:#4c8dff;--accent-fg:#0b0d12}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+header.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em;}
+.brand img{width:38px;height:38px;object-fit:contain;display:block}
+.nav nav{display:flex;gap:18px;font-size:15px}
+.nav nav a{color:var(--muted);text-decoration:none}
+.nav nav a:hover{color:var(--fg)}
+.hero{text-align:center;padding:56px 0 36px}
+.hero h1{font-size:clamp(34px,6vw,54px);line-height:1.1;margin:0 0 16px;letter-spacing:-.025em}
+.hero p.lead{font-size:clamp(17px,2.4vw,20px);color:var(--muted);max-width:620px;margin:0 auto 28px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-weight:600;text-decoration:none;border:1px solid var(--line);color:var(--fg);background:var(--card)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:transparent}
+.btn:hover{filter:brightness(1.08)}
+.btn svg{width:18px;height:18px}
+.small{font-size:13.5px;color:var(--muted);margin-top:14px}
+section{padding:36px 0}
+h2{font-size:26px;letter-spacing:-.015em;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 24px}
+
+/* Previsualización de la bandeja */
+.taskbar{max-width:720px;margin:0 auto;height:52px;border-radius:12px;background:#1d1f26;border:1px solid #2c303a;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#fff;box-shadow:0 12px 34px rgba(0,0,0,.28)}
+.start{display:flex;gap:7px;opacity:.9}
+.start i{width:22px;height:22px;border-radius:6px;background:#3a3f4c;display:block}
+.start i:first-child{background:#4c8dff}
+.tray{display:flex;align-items:center;gap:4px}
+.tray .chev{width:18px;height:18px;opacity:.85;margin-right:2px}
+.ti{position:relative;display:flex;padding:4px 5px;border-radius:7px}
+.ti:hover{background:rgba(255,255,255,.1)}
+.ti svg{width:26px;height:26px;display:block}
+.ti::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);white-space:nowrap;background:#2a2d37;color:#fff;font-size:12.5px;padding:6px 10px;border-radius:7px;border:1px solid #3a3f4c;opacity:0;pointer-events:none;transition:opacity .15s}
+.ti:hover::after,.ti:focus-visible::after{opacity:1}
+.sep{width:1px;height:20px;background:#3a3f4c;margin:0 6px}
+.sysico{width:17px;height:17px;opacity:.9;margin:0 3px}
+.clock{font-size:11.5px;line-height:1.25;text-align:right;margin-left:8px;opacity:.95}
+.cap{text-align:center;color:var(--muted);font-size:13.5px;margin-top:14px}
+@media (max-width:560px){.start{display:none}.taskbar{justify-content:center}}
+.trk{fill:#888;opacity:.5}.b-ok{fill:var(--ok)}.b-warn{fill:var(--warn)}.b-bad{fill:var(--bad)}
+
+/* Tarjetas */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:10px 0 6px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.gi{width:34px;height:34px;color:var(--accent)}
+.glyphs{display:flex;gap:6px}.glyphs .gi{width:28px;height:28px}
+.bars{display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.bars span{height:7px;border-radius:4px;display:block}
+
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:15px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600}
+.t-ok{background:rgba(48,164,108,.16);color:var(--ok)}.t-mid{background:rgba(245,165,36,.16);color:#c98410}.t-no{background:rgba(229,72,77,.15);color:var(--bad)}
+.table-scroll{overflow-x:auto}
+
+ol.steps{padding-left:20px;margin:0}ol.steps li{margin-bottom:10px}
+code{background:var(--card);border:1px solid var(--line);padding:2px 7px;border-radius:6px;font:14px Consolas,"Cascadia Mono",monospace}
+.cta{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:40px 20px}
+footer{padding:36px 0 48px;color:var(--muted);font-size:13.5px;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Símbolos de los iconos de dispositivo (rejilla 24×24) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="g-mouse"><rect x="6.5" y="2.5" width="11" height="19" rx="5.5"/><path d="M12 2.5v7M6.5 9.5h11"/></g>
+    <g id="g-kb"><rect x="2" y="6" width="20" height="12" rx="2.5"/><path d="M7 15.5h10M5.5 9.5h.01M8.5 9.5h.01M11.5 9.5h.01M14.5 9.5h.01M17.5 9.5h.01M5.5 12.5h.01M8.5 12.5h.01M11.5 12.5h.01M14.5 12.5h.01M17.5 12.5h.01"/></g>
+    <g id="g-hp"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="3" y="12" width="4" height="7" rx="1.6"/><rect x="17" y="12" width="4" height="7" rx="1.6"/></g>
+    <g id="g-pad"><path d="M7 7H17C21 7 22.5 17 19.5 17.5C18 17.8 17.5 15 15.5 15H8.5C6.5 15 6 17.8 4.5 17.5C1.5 17 3 7 7 7Z"/><path d="M6.2 11h3.6M8 9.2v3.6M15.5 9.8h.01M17.5 11.8h.01"/></g>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="nav">
+    <div class="brand">
+      <img src="/images/icon.png" alt="">
+      <span>BatteryLifeBT</span>
+    </div>
+    <nav>
+      <a href="#vista">Cómo se ve</a>
+      <a href="#funciones">Funciones</a>
+      <a href="#compatibilidad">Compatibilidad</a>
+      <a href="https://github.com/Ismatrons/BatteryLifeBT">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>La batería de tus dispositivos, siempre a la vista</h1>
+      <p class="lead">BatteryLifeBT muestra en la bandeja de Windows la batería de tu ratón, teclado, auriculares y mando, con un icono propio para cada uno.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://github.com/Ismatrons/BatteryLifeBT/releases/download/v1%2C0/BatteryLifeBT_v1.0.exe" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+          Descargar para Windows
+        </a>
+        <a class="btn" href="https://github.com/Ismatrons/BatteryLifeBT">Ver código en GitHub</a>
+      </div>
+      <p class="small">Windows 11 · Gratis · Código abierto (licencia MIT)</p>
+    </div>
+
+    <section id="vista">
+      <h2 style="text-align:center">Así se ve en tu barra de tareas</h2>
+      <p class="sub" style="text-align:center">Cada dispositivo aparece junto a los demás iconos de la bandeja. Pasa el ratón por encima.</p>
+
+      <div class="taskbar" role="img" aria-label="Ilustración de la bandeja de Windows con cuatro iconos de BatteryLifeBT">
+        <div class="start" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="tray">
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+
+          <span class="ti" tabindex="0" data-tip="Ratón · PRO X Wireless: 51 %">
+            <svg viewBox="0 0 24 24"><g transform="translate(2.6 0) scale(.78)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#g-mouse"/></g><rect class="trk" x="2" y="20.4" width="20" height="3" rx="1.5"/><rect class="b-ok" x="2" y="20.4" width="10.2" height="3" rx="1.5"/></svg>
+          </span>
+          <span class="ti" tabindex="0" data-tip="Teclado: 20 %">
+            <svg viewBox="0 0 24 24"><g transform="translate(2.6 0) scale(.78)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#g-kb"/></g><rect class="trk" x="2" y="20.4" width="20" height="3" rx="1.5"/><rect class="b-warn" x="2" y="20.4" width="4" height="3" rx="1.5"/></svg>
+          </span>
+          <span class="ti" tabindex="0" data-tip="Auriculares: 82 %">
+            <svg viewBox="0 0 24 24"><g transform="translate(2.6 0) scale(.78)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#g-hp"/></g><rect class="trk" x="2" y="20.4" width="20" height="3" rx="1.5"/><rect class="b-ok" x="2" y="20.4" width="16.4" height="3" rx="1.5"/></svg>
+          </span>
+          <span class="ti" tabindex="0" data-tip="Mando: 12 %">
+            <svg viewBox="0 0 24 24"><g transform="translate(2.6 0) scale(.78)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><use href="#g-pad"/></g><rect class="trk" x="2" y="20.4" width="20" height="3" rx="1.5"/><rect class="b-bad" x="2" y="20.4" width="3" height="3" rx="1.5"/></svg>
+          </span>
+
+          <span class="sep"></span>
+          <svg class="sysico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r=".8" fill="#fff"/></svg>
+          <svg class="sysico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>
+          <div class="clock">22:30<br>23/11/2026</div>
+        </div>
+      </div>
+      <p class="cap">Ilustración con datos de ejemplo. Los colores avisan: naranja por debajo del 30 % y rojo por debajo del 15 %.</p>
+    </section>
+
+    <section id="funciones">
+      <h2>Qué hace</h2>
+      <p class="sub">Sin ventanas ni configuraciones: se queda en la bandeja y te avisa de un vistazo.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="glyphs" style="color:var(--accent)">
+            <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#g-mouse"/></svg>
+            <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#g-kb"/></svg>
+            <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#g-hp"/></svg>
+            <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#g-pad"/></svg>
+          </div>
+          <h3>Un icono por dispositivo</h3>
+          <p>Ratón, teclado, auriculares o mando. Aparece al detectarlo y desaparece al desconectarlo.</p>
+        </div>
+        <div class="card">
+          <div class="bars"><span style="width:85%;background:var(--ok)"></span><span style="width:28%;background:var(--warn)"></span><span style="width:12%;background:var(--bad)"></span></div>
+          <h3>Barra de batería</h3>
+          <p>Verde, naranja o roja según el nivel. El porcentaje exacto, al pasar el ratón.</p>
+        </div>
+        <div class="card">
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 9h10M7 13h6"/></svg>
+          <h3>Panel con todo</h3>
+          <p>Un clic abre una lista con todos tus dispositivos y su nivel de batería.</p>
+        </div>
+        <div class="card">
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v9M6.3 6.8a8 8 0 1 0 11.4 0"/></svg>
+          <h3>Arranca con Windows</h3>
+          <p>Actívalo una vez y se inicia solo cada vez que enciendes el equipo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="compatibilidad">
+      <h2>Compatibilidad</h2>
+      <p class="sub">Lo que sé que funciona y lo que aún está sin verificar.</p>
+      <div class="table-scroll">
+      <table>
+        <tr><th>Dispositivo</th><th>Estado</th></tr>
+        <tr><td>Logitech G PRO X Superlight (receptor LIGHTSPEED)</td><td><span class="tag t-ok">Probado</span></td></tr>
+        <tr><td>Otros dispositivos Logitech con receptor USB</td><td><span class="tag t-mid">Sin probar</span></td></tr>
+        <tr><td>Dispositivos Bluetooth que exponen su batería a Windows</td><td><span class="tag t-mid">Sin verificar</span></td></tr>
+        <tr><td>Mandos Xbox inalámbricos (valor estimado)</td><td><span class="tag t-mid">Sin verificar</span></td></tr>
+        <tr><td>Razer Raiju Tournament Edition</td><td><span class="tag t-no">No compatible</span></td></tr>
+      </table>
+      </div>
+      <p class="small">Si un dispositivo no publica su batería, ninguna aplicación puede mostrarla. ¿Has probado otro? Cuéntalo en GitHub.</p>
+    </section>
+
+    <section id="instalar">
+      <h2>Cómo empezar</h2>
+      <ol class="steps">
+        <li>Descarga <strong>BatteryLifeBT.exe</strong> y ábrelo. No necesita instalación.</li>
+        <li>Si Windows muestra un aviso de SmartScreen (la aplicación no está firmada), pulsa <em>Más información</em> y después <em>Ejecutar de todos modos</em>.</li>
+        <li>Para que arranque con Windows, abre una terminal en la carpeta del archivo y ejecuta
+          <br><code>BatteryLifeBT.exe --autostart on</code></li>
+        <li>Si los iconos quedan ocultos tras la flecha <strong>^</strong>, arrástralos a la barra o actívalos en <em>Configuración → Personalización → Barra de tareas</em>.</li>
+        <li>Para cerrarla, clic derecho sobre cualquiera de sus iconos y <em>Salir</em> <span style="color: red;">(funcionalidad aún no implementada)</span>.<br>
+          <span style="color: rgb(0, 255, 247);">Si quieres cerrarlo, <em>Administrador de tareas → BatteryLifeBT → Finalizar tarea</em></span></li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="cta">
+        <h2>Pruébalo gratis</h2>
+        <p class="sub">Sin cuentas, sin anuncios y con el código abierto para que lo revises o lo mejores.</p>
+        <div class="btns">
+          <a class="btn primary" href="https://github.com/Ismatrons/BatteryLifeBT/releases/download/v1%2C0/BatteryLifeBT_v1.0.exe" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+            Descargar BatteryLifeBT.exe
+          </a>
+          <a class="btn" href="https://github.com/Ismatrons/BatteryLifeBT">Código fuente</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    BatteryLifeBT · Licencia MIT · Hecho por ismatrons<br>
+    No está afiliado a Logitech, Razer ni Microsoft. Los nombres de marca pertenecen a sus propietarios.
+  </footer>
+</div>
+</body>
+</html>
