@@ -57,3 +57,9 @@ window.location.href = "cositas.html";
 function home() {
 window.location.href = "index.html";
 }
+
+window.igBannerConfig = {
+        lang: 'es',
+        igr: 'ismatrons',
+        banners: ['my-banner']
+    };
