@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="https://ismatrons.com/downloads/face.png">
-  <link rel="stylesheet" href="styleindexx.css">
+  <link rel="stylesheet" href="styleindex.css">
   <link rel="fluid-icon" href="https://ismatrons.com/imagenes/fluidicon.png" title="Ismatrons">
   <link rel="icon" href="https://ismatrons.com/imagenes/fluidicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +19,16 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="381">
   <title>Ismatrons 3.0</title>
+
+  <!-- Instant Gaming Banners Configuration -->
+  <script>
+    window.igBannerConfig = {
+        lang: 'es',
+        igr: 'ismatrons',
+        banners: ['my-banner']
+    };
+  </script>
+  <script src="https://www.instant-gaming.com/api/banner/partner/loader.js" defer></script>
 </head>
 <body>
 
@@ -48,6 +58,23 @@
     Me dedico a <span class="youtube">Crear contenido</span><br>&<br><span class="java">Programar</span>
   </p>
   <a href="https://pack.ismatrons.com" target="_blank" class="btn">IsmatronsPack</a>
+
+  <!-- Banner integrado directamente dentro de la tarjeta -->
+  <div class="my-banner"></div>
+</div>
+
+<div class="spotify-flotante">
+  <p class="spotify-flotante-titulo">Artista que recomiendo</p>
+  <iframe 
+    style="border-radius:10px; display:block;" 
+    src="https://open.spotify.com/embed/track/37KLoLkhcJMe7Odsstah0V?utm_source=generator&theme=0" 
+    width="100%" 
+    height="80" 
+    frameBorder="0" 
+    allowfullscreen="" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+    loading="lazy">
+  </iframe>
 </div>
 
 <div class="portfolio" id="portfolio"></div>
@@ -75,7 +102,7 @@
   </div>
 </div>
 
-<div class="version">v3.0.2</div>
+<div class="version">v3.0.4</div>
 
 <script src="script30.js"></script>
 
